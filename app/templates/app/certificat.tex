@@ -1,0 +1,122 @@
+{% autoescape off %}
+{% load static %}
+  \documentclass[12pt,a4paper]{article}
+  \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+  \usepackage{graphicx}
+  \usepackage[skins]{tcolorbox}
+  \usepackage{titlesec}
+  \usepackage{longtable}
+  \usepackage{booktabs}
+  \usepackage{xltxtra}
+  \usepackage{xunicode}
+  \usepackage{fontspec}
+  \defaultfontfeatures{Mapping=tex-text}
+  \usepackage[a4paper,left=2cm,right=2cm,top=1.5cm,bottom=2cm]{geometry}
+  \usepackage{fancyhdr}
+  \usepackage{polyglossia}
+  \setdefaultlanguage{french}
+  \setmainfont[Mapping=tex-text]{Linux Biolinum O}
+  \setsansfont{Linux Biolinum}
+  \setotherlanguage{arabic}
+  \newfontfamily\arabicfont[Script=Arabic]{Mothanna}
+
+  % définir \tightlist pour la compatibilité avec pandoc 1.14
+  \providecommand{\tightlist}{%
+	 	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+  % \usepackage{amsmath}
+  % \usepackage{amsfonts}
+  % \usepackage{amssymb}
+
+  % \colorlet{sectioncolor}{orange}
+  % \makeatletter
+  % \renewcommand\sectionlinesformat[4]{%
+  % \colorbox{sectioncolor}{%
+  % \parbox[t]{\dimexpr\textwidth-2\fboxsep\relax}{%
+  % \raggedsection\color{white}\@hangfrom{#3}{#4}%
+  % }}}
+  %  \makeatother
+
+
+  \newtcolorbox{imagetextbox}[3][]{%
+    before=\par\bigskip\noindent,after=\par\medskip,
+    blank,sidebyside,center lower,
+    fontlower=\fontsize{25pt}{28pt}\selectfont\bfseries,
+    width=\textwidth-#2-#3,
+    lefthand width=#2,
+    sidebyside gap=#3,#1}
+
+  \newcommand{\imagetext}[3][0.15]{%
+    \begin{imagetextbox}[]{#1\textwidth}{3mm}%
+      \includegraphics[width=\linewidth]{#2}%
+      \tcblower%
+	    #3%
+    \end{imagetextbox}}
+
+  \usepackage{tikz}\usetikzlibrary{shapes.misc}
+  \newcommand\titlebar{%
+    \tikz[baseline,trim left=3.1cm,trim right=3cm] {
+      \fill [cyan!25] (2.5cm,-1ex) rectangle (\textwidth+3.1cm,2.5ex);
+      \node [
+      fill=cyan!60!white,
+      anchor= base east,
+      rounded rectangle,
+      minimum height=3.5ex] at (3cm,0) {
+        \textbf{\thesection.}
+      };
+    }%
+  }
+  \titleformat{\section}{\large}{\titlebar}{0.1cm}{}
+  \renewcommand*{\thesection}{\arabic{section}}
+  \pagestyle{fancy}
+  \usepackage{bidi}
+  \author{Dr Yahyaoui mohamed Kaddour}
+  \title{Rapport médical }
+\setlength\parindent{0pt}
+  \begin{document}
+  \lhead{Clinique \textsc{El Abrar}}
+  \rhead{Rapport médical}
+
+  \imagetext{media/logo.png}{\textcolor{Gray}{\large{\textarabic{العيادة الطبية الجراحية الأبرار}}\\
+      Clinique Médico-Chirurgicale \textsc{El Abrar}\\
+      \textarabic{ مصلحة أمراض القلب}\\
+      \small{Service de cardiologie médicale et interventionnelle}
+    }}
+  \begin{center}
+    \textcolor{gray}{\textbf{ Dr \textsc{Yahyaoui} Mohamed Kaddour\\
+        Spécialiste en cardiologie}\\
+    }
+  \end{center}
+
+  \begin{center} \huge{Certificat médical}
+
+  \end{center}
+
+
+  \section{Patient}
+  \begin{description}
+	\item[Nom prénoms:] {{ certificat.patient }}
+	\item[Adresse:] {{ patient.adresse }}
+	\item[Date de naissance:] {{ patient.birth }}
+
+  \item[Motif:] {{ certificat.motif }}
+    \end{description}
+    \section*{ {{ certificat.patient}} }
+
+    Je sous-signé Dr Yahyaoui certifie que le patient {{ certificat.patient }}
+    présente {{ certificat.declaration }}
+
+
+    \raggedright{ {{certificat.closing}} }
+                  
+                  \begin{center}
+                    \rule{8cm}{0.4pt}
+                  \end{center}
+                  \vspace{2cm}
+                  \flushbottom\raggedleft Oran le \today\\
+                  \raggedleft Dr \textsc{Yahyaoui M K}\\
+                  \fancyfoot[L]{Dr \textsc{Yahyaoui M K}}
+                \end{document}
+                
+                
+                {% endautoescape %}
+                  

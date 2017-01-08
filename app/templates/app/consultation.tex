@@ -1,0 +1,165 @@
+{% autoescape off %}
+{% load static %}
+\documentclass[headlines=6,headinclude=true,11pt]{scrartcl}
+\usepackage{scrlayer-scrpage}
+\usepackage[left=1.5cm,right=1.5cm,top=4cm,bottom=2cm,includefoot]{geometry}
+\setlength{\footheight}{35pt}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{fontawesome}
+\usepackage{ifthen}
+\usepackage{polyglossia}
+\defaultfontfeatures{Mapping=tex-text}
+\setdefaultlanguage{french}
+\setmainfont[Mapping=tex-text]{Linux Libertine O}
+\setsansfont{Roboto}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic]{Noto Kufi Arabic}
+\definecolor{lightGris}{RGB}{185,185,185}
+\definecolor{darkGris}{RGB}{115,115,115}
+\definecolor{Gris}{RGB}{63,75,81}
+
+\ihead{\begin{tabular}{c} \textcolor{Gris}{\textsf{\bfseries{Clinique médico chirurgicale EL ABRAR}}}\\
+\textcolor{Gris}{\bfseries{\textarabic{العيادة الطبية الجراحية الأبرار}}}\\
+         \textcolor{Gris}{\textsf{\bfseries{Cardiologie médicale et interventionnelle}}}\\\textcolor{Gris}{\bfseries{\textarabic{ مصلحة أمراض القلب}}}\\
+   \end{tabular}
+} 
+%%%% eviter l'italic dans le header
+%\renewcommand{\headfont}{\sffamily}
+\chead{\includegraphics[height=5\baselineskip]{media/logo.png}}
+
+\ohead{\begin{tabular}{r}\textcolor{Gris}{\textsf{\bfseries{Dr Yahyaoui Mohamed Kaddour}}}\\
+         \textcolor{Gris}{\textsf{\bfseries{Cardiologue}}}\\ \textcolor{Gris}{\textsf{\bfseries{kaddourkardio{\faAt}gmail.com}}}\end{tabular}}
+
+
+
+\cfoot{\textcolor{Gris}{\textit{\textbf{``Votre coeur mérite ce qu'il y a de
+        mieux''} } }\\
+\vspace{-3mm}
+\hrulefill\\
+\begin{minipage}{0.32\textwidth}
+\textcolor{Gris}{\sffamily{ {\faHospitalO} 15,rue Tolozane} }\\
+\textcolor{Gris}{\sffamily{Les palmiers, Oran} }
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\textwidth}
+ \textcolor{Gris}{\sffamily{\sffamily{ {\faPhone} (+213) 041-496-066} } } \\
+ \textcolor{Gris}{\sffamily{ {\faFax} (+213) 041-233-491} }
+\end{minipage}
+\hfill
+\begin{minipage}{0.27\textwidth}
+\textcolor{Gris}{\sffamily{\sffamily{ {\faMobile} (+213) 0561 882-066}} } \\
+\textcolor{Gris}{\sffamily{\small{\faEnvelopeO} {clinique-elabrar{\faAt}laposte.net} }}
+\end{minipage} }
+
+
+\begin{document}
+
+\begin{center}
+  \textcolor{Gris}{\bfseries{\huge{\textsf{RAPPORT MÉDICAL}}} }
+\end{center}
+
+  \section*{Patient}
+  \begin{description}
+	\item[Nom prénoms:] {{consultation.patient}}
+	\item[Adresse:] {{patient.adresse}}
+	\item[Date de naissance:] {{patient.birth}}
+	\item[Motifs de consultation:] {% if consultation.emergency == True %}Consultation dans le cadre de l'urgence pour {% else %}Consultation ce jour le {{ consultation.consultation_date }} {% endif %}pour {% for motif in consultation.motif_consultation.all %}{{ motif }} {% endfor %}. 
+
+    \end{description}
+    \subsection*{Facteurs de risques - antécédents }
+      \begin{description}
+        
+      \item[FDR:]
+        
+        \begin{itemize}
+          {% if patient.hypertension == True %} \item Hypertension artérielle.{% endif %}
+            {% if patient.diabete == True %} \item Diabète. {% endif %}
+              {% if patient.dyslipidemia == True %} \item Dyslipidémie. {% endif %}
+                {% if patient.smoker == True %} \item Tabagique. {% endif %}
+                  {% if patient.heredity == True %} \item Hérédité coronarienne. {% endif %}
+                    {% if patient.obesity == True %} \item Obésité.{% endif %}
+                      
+                    \end{itemize}
+
+                  \item[Antécédents:]
+                    {{ patient.history }}
+                  \item[Allergies connues:] {{ patient.allergy }}
+                  \end{description}
+                  \subsection*{Histoire de la maladie}
+                  {{ consultation.histoire }}
+                  
+                  % \begin{center}
+                  %   \rule{8cm}{0.4pt}
+                  % \end{center}
+
+
+                  \subsection*{Examen clinique}
+                  \subsubsection*{Signes fonctionnels}
+                  \begin{itemize}
+                    {% if consultation.fever == True %}\item fièvre.{% endif %}
+                      {% if consultation.dyspnea_nyha == 1 %}\item Eupnéique au repos{% else %}\item Dyspnée au stade {{ consultation.dyspnea_nyha }} de la \textit{NYHA}{% endif %}.
+                        {% if consultation.angina_scc == 1 %}\item Absence d'angor.{% else %}\item Angor au stade {{ consultation.angina_scc }} de la \textit{SCC}.{% endif %}
+     {% if consultation.syncope == True %} \item Syncope.{% endif %}
+
+\end{itemize}
+\subsubsection*{Signes physiques}
+ L'examen clinique retrouve à l'auscultation: {{ consultation.auscultation }} avec
+ une fréquence cardiaque à = {{ consultation.heart_rate}} Bpm.\\
+
+ En périphérie les pouls sont {{ consultation.pulse }} avec une PA = {{ consultation.systolic_bp }}/{{ consultation.diastolic_bp }}mmHg.\\
+
+\section*{Bilan para clinique}
+\subsection*{ECG}
+Le rythme est en {% if consultation.rythm == 'S' %}sinusal{% elif consultation.rythm == 'F' %}fibrillation atriale{% elif consultation.rythm == 'R'%}flutter auriculaire{% elif consultation.rythm == 'T' %}tacchycardie ventriculaire{% elif consultation.rythm == 'P' %}électro stimulé{% endif %}
+          à fréquence cardiaque de {{ consultation.freq }} puls/min.\\
+
+  {% if consultation.bundle_block == 'G' %}Il existe un bloc de branche gauche.\\{% elif consultation.bundle_block == 'D' %}Il existe un bloc de branche droit.\\{% endif %}
+    {% if consultation.hypertrophy == True %}On note aussi une hypertrophie ventriculaire gauche électrique.\\{% endif %}
+      Sur le plan ischémique: {% if consultation.lesion == 'S' %} une lésion en septal{% elif consultation.lesion == 'A' %} une lésion en antérieur{% elif consultation.lesion == 'L' %} une lésion en latéral{% elif consultation.lesion == 'P' %} une lésion en postérieur{% else %}absence de lésions électriques{% endif %},
+              {% if consultation.ischaemia == 'S' %} une ischémie en septal{% elif consultation.ischaemia == 'A' %} une ischémie en antérieur{% elif consultation.ischaemia == 'L' %} une ischémie en latéral{% elif consultation.ischaemia == 'P' %} une ischémie postérieur{% else %}absence d'ischémie électrique{% endif %},
+                      {% if consultation.t_inversion == 'S' %} onde T inversée en septal{% elif consultation.t_inversion == 'A' %} onde T inversée en antérieur{% elif consultation.t_inversion == 'L' %} onde T inversée en en latéral{% elif consultation.t_inversion == 'P' %} onde T inversée en postérieur{% endif %}. \\
+            Le QT corrigé est estimé à {{ consultation.corrected_qt }} msec. 
+            
+{% if consultation.telethorax %}
+ \subsection*{Téléthorax}
+Le téléthorax retrouve: {{ consultation.telethorax }} \\
+{% endif %}
+             
+\subsection*{Échocardiographie du {{ consultation.date_echo }} }
+                
+À l'écho cardiographie on a : {{consultation.echocoeur }}.\\
+               
+{% if eto %} \textbf{l'ETO} retrouve: {{consultation.eto }}{% endif %}
+
+ \subsection*{Biologie}
+
+voir bilans. \\
+                  
+\section*{Én résumé}
+                  
+{{ consultation.resume }}
+                  
+\subsection*{Traitement}
+                  
+{{consultation.ordonnance}}
+                  
+\subsection*{Dispositions complémentaires}
+{{ consultation.dispositions }}
+                  \\
+                  
+ \begin{center}
+  \rule{8cm}{0.4pt}
+\end{center}
+\vspace{2cm}
+\flushbottom\raggedleft Oran le \today\\
+\raggedleft Dr \textsc{Yahyaoui M K}\\
+\end{document}
+                
+                
+                {% endautoescape %}
+                  

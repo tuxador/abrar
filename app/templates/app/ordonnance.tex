@@ -1,0 +1,219 @@
+{% autoescape off %}
+{% load static %}
+\documentclass[headlines=6,headinclude=true,10pt]{scrartcl}
+\usepackage{mwe}
+\usepackage{scrlayer-scrpage}
+\usepackage[left=1.5cm,right=1.5cm,top=4cm,bottom=2cm,includefoot]{geometry}
+\setlength{\footheight}{35pt}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{marvosym}
+\usepackage{ifthen}
+%\usepackage{calc}
+%\usepackage{microtype}
+%\usepackage{lastpage}
+%\usepackage{xltxtra}
+%\usepackage{xunicode}
+%\usepackage{fontspec}
+\usepackage{polyglossia}
+\defaultfontfeatures{Mapping=tex-text}
+%\usepackage{fancyhdr}
+\setdefaultlanguage{french}
+\setmainfont[Mapping=tex-text]{Linux Libertine O}
+\setsansfont{Carlito}
+%\setsansfont{Noto Sans}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic]{Mothanna}
+\definecolor{lightGris}{RGB}{185,185,185}
+\definecolor{darkGris}{RGB}{115,115,115}
+\definecolor{Gris}{RGB}{63,75,81}
+% définir \tightlist pour la compatibilité avec pandoc 1.14
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%%%% polyglossia bug with bidi 
+\makeatletter\@Latintrue\makeatother
+
+%\usepackage{lipsum}
+\usepackage{tikz}\usetikzlibrary{shapes.misc}
+\newcommand\titlebar{%
+\tikz[baseline,trim left=3.1cm,trim right=3cm] {
+    \fill [cyan!25] (2.5cm,-1ex) rectangle (\textwidth+3.1cm,2.5ex);
+    \node [
+        fill=cyan!60!white,
+        anchor= base east,
+        rounded rectangle,
+        minimum height=3.5ex] at (3cm,0) {
+        \textbf{\thesection.}
+    };
+}%
+}
+\titleformat{\section}{\large\sffamily\bfseries}{\titlebar}{0.1cm}{}
+\renewcommand*{\thesection}{\arabic{section}}
+% By default headers are ``slanted'' in koma script
+\setkomafont{pagehead}{\normalfont\mdseries}
+
+\ihead{\ifthenelse{\thepage=1}{ {\begin{tabular}{c} \textcolor{Gris}{\textsf{\large{\bfseries{Clinique médico chirurgicale EL ABRAR} } } }\\
+\textcolor{Gris}{\large{\textarabic{العيادة الطبية الجراحية الأبرار}}}\\
+         \textcolor{Gris}{\textsf{\bfseries{Cardiologie médicale et interventionnelle} } }\\\textcolor{Gris}{\large{\textarabic{ مصلحة أمراض القلب} } }\\
+   \end{tabular} } }{\includegraphics[height=3\baselineskip]{logo.png} }
+}
+%%%% eviter l'italic dans le header
+%\renewcommand{\headfont}{\sffamily}
+\chead{\ifthenelse{\thepage=1}{\includegraphics[height=5\baselineskip]{logo.png}}}{}
+
+\ohead{\ifthenelse{\thepage=1}{\begin{tabular}{r}\textcolor{Gris}{\textsf{\bfseries{Dr Yahyaoui Mohamed Kaddour}}}\\
+         \textcolor{Gris}{\textsf{\bfseries{Cardiologue}}}\\
+          \textcolor{Gris}{\textsf{\bfseries{kaddourkardio{\MVAt}gmail.com}}}\end{tabular}}{\textsf{page \thepage}}}
+
+
+\cfoot{\textcolor{Gris}{\textit{\textbf{``Votre coeur mérite ce qu'il y a de mieux''}}}\\
+\vspace{-3mm}
+\hrulefill\\
+\begin{minipage}{0.32\textwidth}
+\textcolor{Gris}{\sffamily{ {\Forward} 15,rue Tolozane}}\\
+\textcolor{Gris}{\sffamily{Les palmiers, Oran}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\textwidth}
+ \textcolor{Gris}{\sffamily{\sffamily{ {\large\Telefon} (+213) 041-496-066}}} \\
+ \textcolor{Gris}{\sffamily{ {\Faxmachine} (+213) 041-233-491}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.27\textwidth}
+ \textcolor{Gris}{\sffamily{ \sffamily{ {\Mobilefone} (+213) 0561 882-066}}} \\
+  \textcolor{Gris}{\sffamily{ {\Letter} \small{clinique-elabrar{\MVAt}laposte.net}}
+}
+\end{minipage}}
+%\renewcommand{\raggedsection}{\centering}
+
+
+\begin{document}
+
+\begin{center}
+  \Huge{\textsf{ORDONNANCE}}
+\end{center}
+\vspace{2cm}
+   \end{center}
+
+  \begin{center} \huge{Ordonnance}
+
+  \end{center}
+
+  \vspace{01cm}
+  
+  \begin{description}
+  \item[Nom et prénoms:] {{ patient.name }} 
+  \item[Date de naissance:] {{ patient.birth }} 
+  \end{description}
+  \vspace{02cm}
+  \begin{itemize}
+     {% if ordonnance.medoc1 %}
+    
+  \item \textbf{ {{ordonnance.medoc1}} } \hfill {{ ordonnance.poso1 }} \hfill
+    \textit{ {{ ordonnance.qsp1 }} } 
+    
+     {% endif %}
+ {% if ordonnance.medoc2 %}
+    
+  \item \textbf{ {{ordonnance.medoc2}} } \hfill {{ ordonnance.poso2 }} \hfill
+    \textit{ {{ ordonnance.qsp2 }} } 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc3 %}
+    
+  \item \textbf{ {{ordonnance.medoc3}} } \hfill {{ ordonnance.poso3 }} \hfill
+    \textit{ {{ ordonnance.qsp3 }} } 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc4 %}
+    
+  \item \textbf{ {{ordonnance.medoc4}} } \hfill {{ ordonnance.poso4 }} \hfill \textit{ {{ ordonnance.qsp4 }} }
+    
+    {% endif %}
+
+      {% if ordonnance.medoc5 %}
+    
+  \item \textbf{ {{ordonnance.medoc5}} } \hfill {{ ordonnance.poso5 }} \hfill \textit{ {{ ordonnance.qsp5 }} }
+    
+    {% endif %}
+
+      {% if ordonnance.medoc6 %}
+    
+  \item \textbf{  {{ordonnance.medoc6}} } \hfill {{ ordonnance.poso6 }} \hfill \textit{ {{ ordonnance.qsp6 }} }
+    
+    {% endif %}
+
+      {% if ordonnance.medoc7 %}
+    
+  \item \textbf{ {{ordonnance.medoc7}} }\hfill {{ ordonnance.poso7 }} \hfill \textit{ {{ ordonnance.qsp7 }} }
+    
+    {% endif %}
+
+      {% if ordonnance.medoc8 %}
+    
+  \item \textbf{ {{ordonnance.medoc8}} } \hfill {{ ordonnance.poso8 }} \hfill \textit{ {{ ordonnance.qsp8 }} }
+    
+    {% endif %}
+
+      {% if ordonnance.medoc9 %}
+    
+  \item \textbf{ {{ordonnance.medoc9}} } \hfill {{ ordonnance.poso9 }} \hfill {{ ordonnance.qsp9 }} 
+    
+    {% endif %}
+      {% if ordonnance.medoc10 %}
+    
+  \item \textbf{ {{ordonnance.medoc10}} } \hfill {{ ordonnance.poso10 }} \hfill {{ ordonnance.qsp10 }} 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc11 %}
+    
+  \item \textbf{ {{ordonnance.medoc11}} } \hfill {{ ordonnance.poso11 }} \hfill {{ ordonnance.qsp11 }} 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc12 %}
+    
+  \item \textbf{ {{ordonnance.medoc12}} } \hfill {{ ordonnance.poso12 }} \hfill {{ ordonnance.qsp12 }} 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc13 %}
+    
+  \item \textbf{ {{ordonnance.medoc13}} } \hfill {{ ordonnance.poso13 }} \hfill {{ ordonnance.qsp13 }} 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc14 %}
+    
+  \item \textbf{ {{ordonnance.medoc14}} } \hfill {{ ordonnance.poso14 }} \hfill {{ ordonnance.qsp14 }} 
+    
+    {% endif %}
+
+      {% if ordonnance.medoc15 %}
+    
+  \item \textbf{ {{ordonnance.medoc15}} } \hfill {{ ordonnance.poso15 }} \hfill {{ ordonnance.qsp15 }} 
+    
+     {% endif %}
+  \end{itemize}
+  
+  \vspace{2cm}
+  \begin{center}
+    \rule{8cm}{0.4pt}
+  \end{center}
+  \flushbottom\raggedleft Oran le \today\\
+  \raggedleft Dr \textsc{Yahyaoui M K}\\
+  \fancyfoot[L]{Clinique \textsc{El Abrar}}
+  \fancyfoot[R]{15 rue Tolozane, Les Palmiers}
+\end{document}
+                
+                
+                {% endautoescape %}
+                  

@@ -1,0 +1,117 @@
+{% autoescape off %}
+{% load static %}
+  \documentclass[12pt,a4paper]{article}
+  \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+  \usepackage{graphicx}
+  \usepackage[skins]{tcolorbox}
+  \usepackage{titlesec}
+  \usepackage{longtable}
+  \usepackage{booktabs}
+  \usepackage{xltxtra}
+  \usepackage{xunicode}
+  \usepackage{fontspec}
+  \defaultfontfeatures{Mapping=tex-text}
+  \usepackage[a4paper,left=2cm,right=2cm,top=1.5cm,bottom=2cm]{geometry}
+  \usepackage{fancyhdr}
+  \usepackage{polyglossia}
+  \setdefaultlanguage{french}
+  \setmainfont[Mapping=tex-text]{Linux Biolinum O}
+  \setsansfont{Linux Biolinum}
+  \setotherlanguage{arabic}
+  \newfontfamily\arabicfont[Script=Arabic]{Mothanna}
+
+
+  \pagestyle{fancy}
+  \usepackage{bidi}
+  \author{Dr Yahyaoui mohamed Kaddour}
+  \title{Rapport médical }
+\setlength\parindent{0pt}
+
+  \begin{document}
+
+  \lhead{Clinique \textsc{El Abrar}}
+  \rhead{ {{arret.patient}} }
+  \begin{center}
+
+    \huge{Certificat médical - {% if arret.type_arret == 'A' %} Arrêt de travail
+        {% elif arret.type_arret == 'P' %} Reprise du travail {% else %} Prolongation {% endif %} }
+
+  \end{center}
+
+
+  \section{Patient}
+  \begin{description}
+	\item[Nom prénoms:] {{arret.patient}}
+	\item[Adresse:] {{patient.adresse}}
+	\item[Date de naissance:] {{patient.birth}}
+	\item[Raison:] {{arret.type_arret}}. 
+
+    \end{description}
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                 
+                  \section{ {{arret.patient}} }
+         Je sous-signé Dr Yahyaoui certifie avoir examiné ce jour le {{arret.redaction_date}} le patient {{arret.patient}} et declare que son
+         état nécessite un arrêt de travail de {{arret.duree}} à compter du {{arret.arret_date}}, sauf complication intercurrente. \\
+         Dont certificat
+                  
+                  \begin{center}
+                    \rule{8cm}{0.4pt}
+                  \end{center}
+                  \vspace{2cm}
+                  \flushbottom\raggedleft Oran le {{arret.redaction_date}}\\
+                  \raggedleft Dr \textsc{Yahyaoui M K}\\
+                  \fancyfoot[L]{Dr \textsc{Yahyaoui M K}}
+                \end{document}
+                
+                
+                {% endautoescape %}
+                  

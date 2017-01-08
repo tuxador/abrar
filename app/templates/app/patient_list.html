@@ -1,0 +1,83 @@
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href={% static 'clinique/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    {% block styles %}
+    <link href= {% static 'clinique/css/blog-home.css' %}" rel="stylesheet">
+    {% endblock styles %}
+{% block title %}{{ block.super }}Patients{% endblock %}
+
+
+{% block content %}
+
+
+
+
+
+    <table class="table table-compact table-striped table-hover">
+        <tr>
+            <th>Patient </th>
+            <th>Date de naissance </th>
+            <th>Adresse </th>
+            <th>Téléphone</th>
+            <th>Assurance</th>
+
+            <th>Date de 1° admission</th>
+            <th>Allergies connues</th>
+            <th>Tags</th>
+            <th>Éditer</th>
+
+        </tr>
+
+        {% for patient in patients %}
+        <tr>
+            <td><a href="{% url 'clinique:detail_patient' pk=patient.pk %}"><strong>{{ patient.name }}</strong></a></td>
+
+
+            <td>{{ patient.birth }}</td>
+            <td>{{ patient.adresse }}</td>
+            <td>{{ patient.phone }}</td>
+            <td>{% if patient.assurance == True %}CNAS {% else %}CASNOS {% endif %}</td>
+            <td>{{patient.first_admission }}</td>
+            <td>{{ patient.allergy }}</td>
+
+            <td>{% for tag in patient.tags.all %} <span class="label label-warning">{{ tag }}</span> {% endfor %}
+                <td><a href="#"><span class ="glyphicon glyphicon-pencil" aria-hidden="true"></span></td></a>
+
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <a class="btn btn-default " href="#" >
+
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter patient
+    </a>
+
+
+</div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script src="{% static 'clinique/js/jquery.min.js' %}"></script>
+<script src="{% static 'clinique/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'clinique/js/blog-home.js' %}"></script>
+{% endblock scripts %}

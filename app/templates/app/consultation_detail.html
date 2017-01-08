@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}Consultation{% endblock %}
+
+{% block container %}
+<div class="container profile-head">
+  <div class="row">
+    <div class="col-sm-10">
+        <h1>{{ consultation.patient }}  <small>le {{consultation.consultation_date}}</h1>
+
+   <!-- à remplacer par edit consultation  {% if editable %}
+  <a href="{% url 'profiles:edit_self' %}" class="btn btn-info">Edit Profile</a>
+      {% endif %} -->
+    </div>
+    <div class="col-sm-2"><img title="profile picture" class="img-circle img-responsive" src="{% thumbnail show_user.profile.picture|default:'logo.png' 140x140 crop %}">
+    </div>
+  </div>
+</div>
+
+
+<div class="container profile-body">
+  <div class="row">
+    <div class="col-sm-4">
+      <ul class="list-group">
+        <li class="list-group-item text-muted">Données générales</li>
+        <li class="list-group-item text-left"><strong>Consultation du {{ consultation.consultation_date }}</strong></li>
+
+	  <!--  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true" title="This email address has been verified"></span> -->
+	<!--    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true" title="This email address is not verified"></span>-->
+
+
+        <li class="list-group-item text-left">Medecin traitant <strong>Docteur Yahyaoui Mohamed Kaddour</strong></li>
+        <li class="list-group-item text-left"><a href="{% url 'consultation_pdf' pk=consultation.pk %}" >Imprimer rapport <span class ="glyphicon glyphicon-print"></span></a></li>
+
+      <li class="list-group-item text-left"><a href="{% url 'update_consultation' pk=consultation.pk %}" >éditer <span class ="glyphicon glyphicon-pencil"></span></a></li>
+      </ul>
+    </div>
+
+
+
+    <div class="col-sm-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">Observation</div>
+        <div class="panel-body">
+	   <h2>{{ consultation.patient }}</h2>
+         <p> {% if consultation.emergency = True %}consultation dans le cadre de l'urgence pour {% else %} Le patient a séjourné dans notre service du {{ consultation.consultation_date }} au {{ consultation.date_sortie }} pour{% endif %} {% for motif in consultation.motif_consultation.all %}  {{ motif  }}.{% endfor %}</p>
+
+         <div><h3>Histoire de la maladie</h3>
+           <p>{{  consultation.histoire }}</p>
+
+         </div>
+         <div class="col-md4">
+             <h3>Examen clinique</h3>
+                <h4>Signes fonctionnels</h4>
+                <ul>
+      {% if consultation.fever = True %} <li>fièvre</li>{% endif %}
+      {% if consultation.dyspnea_nyha = '1' %} <li>Eupnéique au repos</li>{% else %}<li>Dyspnée au stade {{ consultation.dyspnea_nyha }} de la <em>NYHA</em></li>{% endif %}
+     {% if consultation.angina_scc = '1' %} <li>Absence d'angor</li>{% else %}<li>Angor au stade {{ consultation.angina_scc }} de la <em>SCC</em></li>{% endif %}
+     {% if consultation.syncope = True %} <li>Syncope</li>{% endif %}
+
+               </ul>
+               <h4>Signes physiques</h4>
+                   <p> L'examen clinique retrouve à l'auscultation: {{ consultation.auscultation }} avec une  Fréquence cardiaque à = {{ consultation.heart_rate}} Bpm.<br>
+                     En périphérie les pouls sont {{ consultation.pulse }} avec une  PA = {{ consultation.systolic_bp }}/{{ consultation.diastolic_bp }}mmHg<br>
+                   </p>
+         </div>
+
+         <div class="col-md4">
+                 <h3>ECG</h3>
+                   <p>Le rythme est en {% if consultation.rythm = 'S' %}sinusal{% elif consultation.rythm = 'F' %}fibrillation atriale{% elif consultation.rythm = 'R'%}flutter auriculaire{% elif consultation.rythm = 'T' %}tacchycardie ventriculaire{% elif consultation.rythm = 'P' %}électro stimulé{% endif %} à fréquence cardiaque de {{ consultation.freq}} puls/min.<br>
+                     {% if consultation.bundle_block = 'G' %}Il existe un block de branche gauche.<br>{% elif consultation.bundle_block = 'D' %}Il existe un block de branche droit.<br>{% endif %}
+                     {% if consultation.hypertrophy = True %}On note aussi une hypertrophie ventriculaire gauche électrique.<br>{% endif %}
+                     <p>sur le plan ischémique: {% if consultation.lesion = 'S' %} une lésion en septal{% elif consultation.lesion = 'A' %} une lésion en antérieur{% elif consultation.lesion = 'L' %} une lésion en latéral{% elif consultation.lesion = 'P' %} une lésion en postérieur{% else %}absence de lésions électriques{% endif %},
+                       {% if consultation.ischaemia = 'S' %} une ischémie en septal{% elif consultation.ischaemia = 'A' %} une ischémie en antérieur{% elif consultation.ischaemia = 'L' %} une ischémie en latéral{% elif consultation.ischaemia = 'P' %} une ischémie postérieur{% else %}absence d'ischémie électrique{% endif %},
+                       {% if consultation.t_inversion = 'S' %} onde T inversée en septal{% elif consultation.t_inversion = 'A' %} onde T inversée en antérieur{% elif consultation.t_inversion = 'L' %} onde T inversée en en latéral{% elif consultation.t_inversion = 'P' %} onde T inversée en postérieur{% endif %}<br>
+                       Le QT corrigé est estimé à {{ consultation.corrected_qt }} msec
+                       .<br>
+
+                   </p>
+          </div>
+          <div><h3>Téléthorax</h3>
+            <p>Le téléthorax retrouve: {{ consultation.telethorax }}.<p>
+              </div>
+
+              <div><h3>Échocardiographie {{ date_echo }}</h3>
+                <p>À l'échocardiographie on a : {{ consultation.echocoeur }}.<p>
+                  {% if eto %}<p>{{ consultation.eto }}</p>{% endif %}
+                  </div>
+
+
+
+
+            <div><h2>En résumé</h2>
+              <p>{{ consultation.resume }}</p>
+            </div>
+
+
+
+
+            </div>
+
+
+            <div><h2>Sortie</h2>
+
+
+              <h3>Dispositions complémentaires</h3>
+             <p>{{ consultation.dispositions }}</p>
+
+
+
+            </div>
+
+     </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock  %}

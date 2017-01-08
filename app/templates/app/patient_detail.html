@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+<!-- Bootstrap Core CSS -->
+   <link href={% static 'clinique/css/bootstrap.min.css' %}" rel="stylesheet">
+
+   <!-- Custom CSS -->
+   {% block styles %}
+     <link href= {% static 'clinique/css/blog-home.css' %}" rel="stylesheet">
+   {% endblock styles %}
+
+{% block title %}{{ block.super }}Patient {{ consultation.patient }}{% endblock title %}
+
+
+
+
+{% block content %}
+
+     <h1>{{ patient.name }}</h1>
+
+
+
+    <table class="table table-compact table-striped table-hover">
+        <tr>
+            <th>Consultations </th>
+            <th>Motifs </th>
+            <th>Urgence?</th>
+            <th>Resumé clinique</th>
+            <th>dispositions complémentaires</th>
+            <th>Éditer</th>
+            <th>tags</th>
+
+       </tr>
+
+        {% for consultation in consultations %}
+        <tr>
+            <td><a href="{% url 'clinique:consultation_pdf' pk1=patient.pk pk2=consultation.pk %}"><span class ="glyphicon glyphicon-print" aria-hidden="true"></span> <strong>{{ consultation.consultation_date }}</strong></a></td>
+
+
+            <td>{% for motif in consultation.motifs.all %} {{ motif }} {% endfor %}</td>
+            <td>{% if consultation.emergency == True %} oui {% else %} non {% endif %}</td>
+            <td>{{ consultation.resume }}</td>
+            <td>{{ consultation.dispositions }}</td>
+
+            <td><a href="#"><span class ="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+            <td>{% for tag in patient.tags.all %} <span class="label label-warning">{{ tag }}</span> {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+
+
+    <a class="btn btn-default " href="#" >
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter patient
+    </a>
+    <h2>courrier médical</h2>
+
+    <table class="table table-compact table-striped table-hover">
+        <tr>
+            <th>Courrier</th>
+            <th>correspondant</th>
+            <th>motif</th>
+            <th>éditer</th>
+       </tr>
+
+        {% for courrier in courriers %}
+        <tr>
+            <td><a href="{% url 'courrier:courrier_pdf' pk1=patient.pk pk2=courrier.pk %}"><span class ="glyphicon glyphicon-print" aria-hidden="true"></span> {{ courrier.patient }} - {{ courrier.courrier_date }}</a></td>
+
+
+            <td>{{ courrier.correspondant }}</td>
+            <td>{{ courrier.diagnostic }}</td>
+            <td><a href="#"><span class ="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+
+
+    <a class="btn btn-default " href="#" >
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter courrier
+    </a>
+
+ <h2>certificats médicaux</h2>
+
+    <table class="table table-compact table-striped table-hover">
+        <tr>
+            <th>Certificat</th>
+            <th>correspondant</th>
+            <th>date</th>
+            <th>déclaration</th>
+            <th>éditer</th>
+       </tr>
+
+        {% for certificat in certificats %}
+        <tr>
+            <td><a href="#{# % url 'courrier:certficat_pdf' pk1=patient.pk pk2=certificat.pk % #}"><span class ="glyphicon glyphicon-print" aria-hidden="true"></span> {{ certificat.patient }}</a></td>
+
+
+            <td>{{ certificat.correspondant }}</td>
+            <td>{{ certificat.certificat_date }}</td>
+            <td>{{ certificat.declaration }}</td>
+            <td><a href="#"><span class ="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+
+
+    <a class="btn btn-default " href="#" >
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter certificat </a>
+
+
+</div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script src="{% static 'clinique/js/jquery.min.js' %}"></script>
+<script src="{% static 'clinique/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'clinique/js/blog-home.js' %}"></script>
+{% endblock scripts %}
+
+

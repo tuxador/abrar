@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+   <link href={% static 'clinique/css/bootstrap.min.css' %}" rel="stylesheet">
+
+   <!-- Custom CSS -->
+   {% block styles %}
+   <link href= {% static 'clinique/css/blog-home.css' %}" rel="stylesheet">
+   {% endblock styles %}
+
+{% block title %}{{ block.super }}Nouveau patient{% endblock title %}
+
+{% block content %}
+   <div class="container">
+       <div class="col-md-8">
+      <h1>Nouveau patient</h1>
+      <div class="well">
+        <form method="POST" action="."> {% csrf_token %}
+        {{ form | crispy }}
+          <input type="submit" value="valider" class="btn btn-success btn-lg btn-block" >
+      </form>
+      </div>
+      </div>
+      </div>
+      
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'clinique/js/jquery.min.js' %}"></script>
+<script src="{% static 'clinique/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'clinique/js/blog-home.js' %}"></script>
+{% endblock scripts %}

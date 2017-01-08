@@ -1,0 +1,126 @@
+{% autoescape off %}
+
+{% load static %}
+\documentclass[headlines=6,headinclude=true,11pt]{scrartcl}
+\usepackage{scrlayer-scrpage}
+\usepackage[left=1.5cm,right=1.5cm,top=4cm,bottom=2cm,includefoot]{geometry}
+\setlength{\footheight}{35pt}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{fontawesome}
+\usepackage{ifthen}
+\usepackage{polyglossia}
+\defaultfontfeatures{Mapping=tex-text}
+\setdefaultlanguage{french}
+\setmainfont[Mapping=tex-text]{Linux Libertine O}
+\setsansfont{Roboto}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic]{Noto Kufi Arabic}
+\definecolor{lightGris}{RGB}{185,185,185}
+\definecolor{darkGris}{RGB}{115,115,115}
+\definecolor{Gris}{RGB}{63,75,81}
+
+\ihead{\begin{tabular}{c} \textcolor{Gris}{\textsf{\bfseries{Clinique médico chirurgicale EL ABRAR}}}\\
+\textcolor{Gris}{\bfseries{\textarabic{العيادة الطبية الجراحية الأبرار}}}\\
+         \textcolor{Gris}{\textsf{\bfseries{Cardiologie médicale et interventionnelle}}}\\\textcolor{Gris}{\bfseries{\textarabic{ مصلحة أمراض القلب}}}\\
+   \end{tabular}
+}
+%%%% eviter l'italic dans le header
+%\renewcommand{\headfont}{\sffamily}
+\chead{\includegraphics[height=5\baselineskip]{media/logo.png}}
+
+\ohead{\begin{tabular}{r}\textcolor{Gris}{\textsf{\bfseries{Dr Yahyaoui Mohamed Kaddour}}}\\
+         \textcolor{Gris}{\textsf{\bfseries{Cardiologue}}}\\ \textcolor{Gris}{\textsf{\bfseries{kaddourkardio{\faAt}gmail.com}}}\end{tabular}}
+
+
+
+\cfoot{\textcolor{Gris}{\textit{\textbf{``Votre coeur mérite ce qu'il y a de
+        mieux''} } }\\
+\vspace{-3mm}
+\hrulefill\\
+\begin{minipage}{0.32\textwidth}
+\textcolor{Gris}{\sffamily{ {\faHospitalO} 15,rue Tolozane} }\\
+\textcolor{Gris}{\sffamily{Les palmiers, Oran} }
+\end{minipage}
+\hfill
+\begin{minipage}{0.25\textwidth}
+ \textcolor{Gris}{\sffamily{\sffamily{ {\faPhone} (+213) 041-496-066} } } \\
+ \textcolor{Gris}{\sffamily{ {\faFax} (+213) 041-233-491} }
+\end{minipage}
+\hfill
+\begin{minipage}{0.27\textwidth}
+\textcolor{Gris}{\sffamily{\sffamily{ {\faMobile} (+213) 0561 882-066}} } \\
+\textcolor{Gris}{\sffamily{\small{\faEnvelopeO} {clinique-elabrar{\faAt}laposte.net} }}
+\end{minipage} }
+
+ 
+  
+\begin{document}
+
+\begin{center}
+  \textcolor{Gris}{\bfseries{\huge{\textsf{Demande de soins dentaires}}} }
+\end{center}
+
+\subsection*{Patient}
+   \begin{description}
+   \item[Nom prénoms:] {{ stomato.patient }}
+   \item[Adresse:] {{ patient.adresse }}
+   \item[Date de naissance:] {{ patient.birth }}
+   \item[Adresse:] {{ patient.adresse }}
+   \end{description}
+
+
+
+
+   \itshape{Cher confrère, chère consoeur,}
+
+   Je vous confie pour soins dentaires le patient
+\bfseries{ {{stomato.patient }} } suivi chez nous pour
+{{ stomato.diagnostic }}.
+    
+ \subsection*{Risques liées aux soins }
+ 
+ \subsubsection*{Risque infectieux}
+ {% if stomato.infectious_risk == 'I' %}
+\textbf{Important:} antiobioprophyllaxie obligatoire par {{ stomato.prescription }} 60 à 30 minutes \textit{avant} la procédure.
+{% elif stomato.infectious_risk == 'M' %}
+\textbf{Modéré:} antiobioprophyllaxie facultative par {{ stomato.prescription }} 60 à 30 minutes \textit{avant} la procédure.
+{% else %}
+\textbf{Faible:} Pas d'antibioprophylaxie.
+{% endif %}
+ \subsubsection*{Risque thrombo-embolique}
+ {% if stomato.thrombotic_risk == 'I' %}
+ \textbf{Important:} INR cible à {{ stomato.inr_cible }} . Relai par Lovenox à
+ dose efficace ou bien \textit{maintenir le sintrom}.
+ {% elif stomato.infectious_risk == 'M' %}
+   \textbf{Modéré:} possibilité d'interrompre les AVK durant 48h.
+ INR cible est de {{ stomato.inr_cible }}.
+ {% else %}
+\textbf{Faible.}
+
+ \subsubsection*{Risque syncopal}
+ {% %}
+{% %}
+{% %}
+         
+ \vspace{1em}
+ 
+\raggedleft{Dont certificat}
+
+  \begin{center}
+                    \rule{8cm}{0.4pt}
+                  \end{center}
+                  \vspace{2cm}
+                  \flushbottom\raggedleft Oran le {{ arret.redaction_date }}\\
+                  \raggedleft Dr \textsc{Yahyaoui M K}\\
+
+%----------------------------------------------------------------------------------------
+
+
+\end{document}
+
+{% endautoescape %}

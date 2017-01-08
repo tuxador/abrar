@@ -1,0 +1,205 @@
+{% autoescape off %}
+{% load static %}
+  \documentclass[12pt,a4paper]{article}
+  \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+  \usepackage{graphicx}
+  \usepackage[skins]{tcolorbox}
+  \usepackage{titlesec}
+  \usepackage{longtable}
+  \usepackage{booktabs}
+  \usepackage{xltxtra}
+  \usepackage{xunicode}
+  \usepackage{fontspec}
+  \defaultfontfeatures{Mapping=tex-text}
+  \usepackage[a4paper,left=2cm,right=2cm,top=1.5cm,bottom=2cm]{geometry}
+  \usepackage{fancyhdr}
+  \usepackage{polyglossia}
+  \setdefaultlanguage{french}
+  \setmainfont[Mapping=tex-text]{Linux Biolinum O}
+  \setsansfont{Linux Biolinum}
+  \setotherlanguage{arabic}
+  \newfontfamily\arabicfont[Script=Arabic]{Mothanna}
+
+  % définir \tightlist pour la compatibilité avec pandoc 1.14
+  \providecommand{\tightlist}{%
+	 	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+  % \usepackage{amsmath}
+  % \usepackage{amsfonts}
+  % \usepackage{amssymb}
+
+  % \colorlet{sectioncolor}{orange}
+  % \makeatletter
+  % \renewcommand\sectionlinesformat[4]{%
+  % \colorbox{sectioncolor}{%
+  % \parbox[t]{\dimexpr\textwidth-2\fboxsep\relax}{%
+  % \raggedsection\color{white}\@hangfrom{#3}{#4}%
+  % }}}
+  %  \makeatother
+
+
+  \newtcolorbox{imagetextbox}[3][]{%
+    before=\par\bigskip\noindent,after=\par\medskip,
+    blank,sidebyside,center lower,
+    fontlower=\fontsize{25pt}{28pt}\selectfont\bfseries,
+    width=\textwidth-#2-#3,
+    lefthand width=#2,
+    sidebyside gap=#3,#1}
+
+  \newcommand{\imagetext}[3][0.15]{%
+    \begin{imagetextbox}[]{#1\textwidth}{3mm}%
+      \includegraphics[width=\linewidth]{#2}%
+      \tcblower%
+	    #3%
+    \end{imagetextbox}}
+
+  \usepackage{tikz}\usetikzlibrary{shapes.misc}
+  \newcommand\titlebar{%
+    \tikz[baseline,trim left=3.1cm,trim right=3cm] {
+      \fill [cyan!25] (2.5cm,-1ex) rectangle (\textwidth+3.1cm,2.5ex);
+      \node [
+      fill=cyan!60!white,
+      anchor= base east,
+      rounded rectangle,
+      minimum height=3.5ex] at (3cm,0) {
+        \textbf{\thesection.}
+      };
+    }%
+  }
+  \titleformat{\section}{\large}{\titlebar}{0.1cm}{}
+  \renewcommand*{\thesection}{\arabic{section}}
+  \pagestyle{fancy}
+  \usepackage{bidi}
+  \author{Dr Yahyaoui mohamed Kaddour}
+  \title{Rapport médical }
+\setlength\parindent{0pt}
+  \begin{document}
+  \lhead{Clinique \textsc{El Abrar}}
+  \rhead{Rapport médical}
+
+  \imagetext{media/logo.png}{\textcolor{Gray}{\large{\textarabic{العيادة الطبية الجراحية الأبرار}}\\
+      Clinique Médico-Chirurgicale \textsc{El Abrar}\\
+      \textarabic{ مصلحة أمراض القلب}\\
+      \small{Service de cardiologie médicale et interventionnelle}
+    }}
+  \begin{center}
+    \textcolor{gray}{\textbf{ Dr \textsc{Yahyaoui} Mohamed Kaddour\\
+        Spécialiste en cardiologie}\\
+    }
+  \end{center}
+
+  \begin{center} \huge{Rapport médical}
+
+  \end{center}
+
+
+  \section{Patient}
+  \begin{description}
+	\item[Nom prénoms:] {{ consultation.patient }}
+	\item[Adresse:] {{ patient.ardress }}
+	\item[Date de naissance:] {{ patient.birth }}
+	\item[Motifs de consultation:] {% if consultation.emergency = True %}Consultation dans le cadre de l'urgence pour {% else %}Consultation ce jour le {{ consultation.consultation_date }} {% endif %}pour {% for motif in consultation.motif_consultation.all %}{{ motif }} {% endfor %}. 
+
+    \end{description}
+         \section{Facteurs de risques - antécédents }
+      \begin{description}
+        
+      \item[FDR:]
+        
+        \begin{itemize}
+          {% if patient.hypertension = True %} \item Hypertension artérielle.{% endif %}
+            {% if patient.diabete = True %} \item Diabète. {% endif %}
+              {% if patient.dyslipidemia = True %} \item Dyslipidémie. {% endif %}
+                {% if patient.smoker = True %} \item Tabagique. {% endif %}
+                  {% if patient.heredity = True %} \item Hérédité coronarienne. {% endif %}
+                    {% if patient.obesity = True %} \item Obésité.{% endif %}
+                      
+                    \end{itemize}
+
+                  \item[Antécédents:]
+                    {{ patient.history }}
+                  \item[Allergies connues:] {{ patient.allergy }}
+                  \end{description}
+                  \section{Histoire de la maladie}
+                  {{ consultation.histoire }}
+                  
+                  % \begin{center}
+                  %   \rule{8cm}{0.4pt}
+                  % \end{center}
+
+
+                  \section{Examen clinique}
+                  \subsection{Signes fonctionnels}
+                  \begin{itemize}
+                    {% if consultation.fever = True %}\item fièvre.{% endif %}
+                      {% if consultation.dyspnea_nyha = '1' %}\item Eupnéique au repos{% else %}\item Dyspnée au stade {{ consultation.dyspnea_nyha }} de la \textit{NYHA}{% endif %}.
+                        {% if consultation.angina_scc = '1' %}\item Absence d'angor.{% else %}\item Angor au stade {{ consultation.angina_scc }} de la \textit{SCC}.{% endif %}
+     {% if consultation.syncope = True %} \item Syncope.{% endif %}
+
+\end{itemize}
+\subsection{Signes physiques}
+ L'examen clinique retrouve à l'auscultation: {{ consultation.auscultation }} avec
+ une fréquence cardiaque à = {{ consultation.heart_rate}} Bpm.\\
+
+ En périphérie les pouls sont {{ consultation.pulse }} avec une PA = {{ consultation.systolic_bp }}/{{ consultation.diastolic_bp }}mmHg.\\
+
+\section{Bilan para clinique}
+\subsection{ECG}
+Le rythme est en {% if consultation.rythm = 'S' %}sinusal{% elif consultation.rythm = 'F' %}fibrillation atriale{% elif consultation.rythm = 'R'%}flutter auriculaire{% elif consultation.rythm = 'T' %}tacchycardie ventriculaire{% elif consultation.rythm = 'P' %}électro stimulé{% endif %}
+          à fréquence cardiaque de {{ consultation.freq }} puls/min.\\
+
+  {% if consultation.bundle_block = 'G' %}Il existe un bloc de branche gauche.\\{% elif consultation.bundle_block = 'D' %}Il existe un bloc de branche droit.\\{% endif %}
+    {% if consultation.hypertrophy = True %}On note aussi une hypertrophie ventriculaire gauche électrique.\\{% endif %}
+      Sur le plan ischémique: {% if consultation.lesion = 'S' %} une lésion en septal{% elif consultation.lesion = 'A' %} une lésion en antérieur{% elif consultation.lesion = 'L' %} une lésion en latéral{% elif consultation.lesion = 'P' %} une lésion en postérieur{% else %}absence de lésions électriques{% endif %},
+              {% if consultation.ischaemia = 'S' %} une ischémie en septal{% elif consultation.ischaemia = 'A' %} une ischémie en antérieur{% elif consultation.ischaemia = 'L' %} une ischémie en latéral{% elif consultation.ischaemia = 'P' %} une ischémie postérieur{% else %}absence d'ischémie électrique{% endif %},
+                      {% if consultation.t_inversion = 'S' %} onde T inversée en septal{% elif consultation.t_inversion = 'A' %} onde T inversée en antérieur{% elif consultation.t_inversion = 'L' %} onde T inversée en en latéral{% elif consultation.t_inversion = 'P' %} onde T inversée en postérieur{% endif %}. \\
+            Le QT corrigé est estimé à {{ consultation.corrected_qt }} msec. \\
+            
+            {% if consultation.telethorax %}
+              \subsection{Téléthorax}
+              Le téléthorax retrouve: {{ consultation.telethorax }} \\
+              
+              {% endif %}
+                
+                \subsection{Échocardiographie du {{ consultation.date_echo }} }
+                
+                À l'écho cardiographie on a : {{consultation.echocoeur }}.\\
+                
+                {% if eto %} \textbf{l'ETO} retrouve: {{consultation.eto }}{% endif %}
+                  
+                  \subsection{Biologie}
+
+                  % \begin{description}aspect de cardiopathie ischémique à fonction VG préservée \textbf{FEVG à 45\% Au Simpson biplan }.\\
+                  %   Hypokinésie septale et akinésie inférieure.\\
+                  %   Pas de vice valvulaire.\\
+                  %   PAPS à 25mmHg.
+                  % \item[Troponines] négatives.
+                  % \item[FNS] HB = 11g/dl. plt = 178.000/mm3 GB = 6400/mm3
+                  % \item[Sérologies] négatives.
+                  % \item[Biochimie] glycémie = 0.98 g/l urée = 0.25g/l Créat = 8 mg/l.
+                  % \end{description}
+                  voir bilans. \\
+                  
+                  \section{Én résumé}
+                  
+                  {{ consultation.resume }}
+                  
+                  \subsection{Traitement}
+                  
+                  {{consultation.ordonnance}}
+                  
+                  \subsection{Dispositions complémentaires}
+                  {{ consultation.dispositions }}
+                  \\
+                  
+                  \begin{center}
+                    \rule{8cm}{0.4pt}
+                  \end{center}
+                  \vspace{2cm}
+                  \flushbottom\raggedleft Oran le \today\\
+                  \raggedleft Dr \textsc{Yahyaoui M K}\\
+                  \fancyfoot[L]{Dr \textsc{Yahyaoui M K}}
+                \end{document}
+                
+                
+                {% endautoescape %}
+                  
